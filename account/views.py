@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm
 from django.contrib.auth.views import LoginView
 from .forms import CustomLoginForm
+from django.contrib.auth import logout
 
 class RegisterView(View):
     def get(self, request):
@@ -20,3 +21,9 @@ class RegisterView(View):
 class LoginView(LoginView):
     form_class = CustomLoginForm
     template_name = 'login.html'
+    
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
