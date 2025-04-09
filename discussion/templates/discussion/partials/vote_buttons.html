@@ -1,0 +1,14 @@
+<div id="vote-section-{{ answer.id }}" class="d-inline">
+    <form hx-post="{% url 'answer-vote' answer.id 'up' %}" hx-target="#vote-section-{{ answer.id }}" hx-swap="outerHTML" method="post" class="d-inline">
+        {% csrf_token %}
+        <button class="btn btn-sm btn-outline-success {% if user in answer.upvote.all %}active{% endif %}">
+            👍 {{ answer.upvote.count }}
+        </button>
+    </form>
+    <form hx-post="{% url 'answer-vote' answer.id 'down' %}" hx-target="#vote-section-{{ answer.id }}" hx-swap="outerHTML" method="post" class="d-inline ms-1">
+        {% csrf_token %}
+        <button class="btn btn-sm btn-outline-danger {% if user in answer.downvote.all %}active{% endif %}">
+            👎 {{ answer.downvote.count }}
+        </button>
+    </form>
+</div>

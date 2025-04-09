@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="container mt-5">
+  <div id="question-container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card shadow rounded-4">
+          <div class="card-body p-4">
+            <h3 class="text-center mb-4">Ask a Question</h3>
+            <form method="post" >
+              {% csrf_token %}
+              {% for field in form %}
+                <div class="mb-3">
+                  <label class="form-label">{{ field.label }}</label>
+                  {% if field.name == 'question' %}
+                    {{ field.as_widget }}
+                  {% else %}
+                    {{ field }}
+                  {% endif %}
+                  {% if field.errors %}
+                    <div class="text-danger small">
+                      {{ field.errors|striptags }}
+                    </div>
+                  {% endif %}
+                </div>
+              {% endfor %}
+
+              <button type="submit" class="btn btn-success w-100">
+                Submit Question
+              </button>
+            </form>
+
+            <!-- 🔍 Live similar question search -->
+            <div
+              id="similar-questions-container"
+              hx-get="{% url 'similar-questions' %}"
+              hx-trigger="keyup changed delay:500ms from:#id_question"
+              hx-target="#similar-questions-container"
+              hx-params="*"
+              hx-include="#id_question"
+              hx-indicator="#loading"
+              class="mt-4"
+            ></div>
+
+            <!-- 🔄 Loading Spinner -->
+            <div id="loading" class="text-center mt-2" style="display: none">
+              <div class="spinner-border text-success" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock body %}

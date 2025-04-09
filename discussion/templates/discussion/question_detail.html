@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block body %}
+
+<div class="container py-5">
+
+    <!-- Question -->
+    <div class="mb-4 p-4 bg-white rounded">
+        <h4>{{ question.question }}</h4>
+        <p class="text-muted">Asked by <strong>{{ question.user.username }}</strong> • {{ question.created_at}}</p>
+    </div>
+
+    <!-- Answer Form -->
+    <div class="mb-5 p-4 bg-white shadow-sm rounded">
+        <h5 class="mb-3">Your Answer</h5>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.media }}  {# required for CKEditor5 #}
+            {{ form.answer }}
+            <button class="btn btn-primary mt-3" type="submit">Submit Answer</button>
+        </form>
+    </div>
+
+    <!-- All Answers -->
+    <h5 class="mb-3">Answers ({{ answers.count }})</h5>
+    {% for ans in answers %}
+        <div class="mb-4 p-4 bg-white  rounded" style="border: 1px solid #989898">
+            <div class="mb-2">
+                {{ ans.answer|safe }}
+            </div>
+            <div class="d-flex justify-content-between text-muted small">
+                <div>
+                    <strong>{{ ans.user.username }}</strong> • {{ ans.created_at }}
+                </div>
+                <div>
+                    <div id="vote-section-{{ ans.id }}">
+                        {% include "discussion/partials/vote_buttons.html" with answer=ans %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="alert alert-info">No answers yet. Be the first to answer!</div>
+    {% endfor %}
+
+</div>
+
+{% endblock body %}

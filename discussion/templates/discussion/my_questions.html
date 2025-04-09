@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">My Questions</h2>
+  {% if questions %}
+    <div class="list-group">
+      {% for q in questions %}
+        <div class="list-group-item list-group-item-action mb-2 shadow-sm rounded-3">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <h5 class="mb-1">{{ q.question|truncatewords:15 }}</h5>
+              <small class="text-muted">Created: {{ q.created_at|date:"M d, Y H:i" }}</small>
+            </div>
+            <div>
+                <a href="{% url 'question-detail' q.pk %}" class="btn btn-sm btn-outline-primary">Response</a>
+                <a href="{% url 'edit-question' q.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info">You haven’t asked any questions yet.</div>
+  {% endif %}
+</div>
+{% endblock %}
